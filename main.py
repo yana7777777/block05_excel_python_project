@@ -1,713 +1,678 @@
-# Практическая ячейка 1. Цикл for и range()
-# Данные из датасета: годы наблюдения с дополнительной информацией
+# Практическая ячейка 1. Список и доступ по индексу
+# Данные из датасета: список стран
+
+countries = ["Россия", "Китай", "США", "Индия", "Бразилия", "Германия", "Япония", "Нигерия", "Мексика", "Египет"]
 
 print("=" * 50)
-print("ДИНАМИКА ДЕМОГРАФИЧЕСКИХ ПОКАЗАТЕЛЕЙ ПО ГОДАМ")
+print("СПИСОК СТРАН ДЛЯ АНАЛИЗА")
 print("=" * 50)
 
-# Список годов из датасета (2000-2020 с шагом 5)
-years = list(range(2000, 2021, 5))
-print(f"Годы наблюдения: {years}")
+print("\nСписок стран:", countries)
+print("Первая страна в списке:", countries[0])
+print("Последняя страна в списке:", countries[-1])
+print("Третья страна в списке:", countries[2])
+print("Предпоследняя страна в списке:", countries[-2])
+print("Количество стран в списке:", len(countries))
 
-# Создаем словарь с данными для каждого года (в промилле)
-data_by_year = {
-    2000: {"birth": 11.2, "death": 15.8, "pop": 146300000},
-    2005: {"birth": 10.8, "death": 15.2, "pop": 146700000},
-    2010: {"birth": 10.2, "death": 14.8, "pop": 147200000},
-    2015: {"birth": 9.8, "death": 14.2, "pop": 147800000},
-    2020: {"birth": 10.5, "death": 14.5, "pop": 146000000}
+# Дополнительно: срез списка (первые 5 стран)
+print("\nПервые 5 стран:", countries[:5])
+# Срез списка (последние 3 страны)
+print("Последние 3 страны:", countries[-3:])
+
+
+# Практическая ячейка 2. Изменение списка и добавление элементов
+# Данные из датасета: список стран
+
+countries = ["Россия", "Китай", "США", "Индия", "Бразилия", "Германия", "Япония", "Нигерия", "Мексика", "Египет"]
+
+print("=" * 50)
+print("ИЗМЕНЕНИЕ СПИСКА СТРАН")
+print("=" * 50)
+
+print("\nИсходный список стран:", countries)
+
+# Изменяем элемент по индексу
+countries[1] = "Китай (КНР)"          # меняем "Китай" на "Китай (КНР)"
+countries[4] = "Бразилия (ФР)"        # меняем "Бразилия" на "Бразилия (ФР)"
+countries[-1] = "Египет (АРЕ)"        # меняем "Египет" на "Египет (АРЕ)"
+
+print("\nПосле изменения элементов:", countries)
+
+# Добавляем элементы в конец списка
+countries.append("Аргентина")
+countries.append("Таиланд")
+countries.append("Чили")
+
+print("После добавления новых стран:", countries)
+
+# Вставляем элемент на конкретную позицию
+countries.insert(2, "Великобритания")
+print("После вставки на позицию 2:", countries)
+
+# Удаляем элемент по индексу
+removed_country = countries.pop(5)
+print(f"Удалённая страна (позиция 5): {removed_country}")
+print("После удаления:", countries)
+
+# Удаляем элемент по значению
+countries.remove("Германия")
+print("После удаления 'Германия':", countries)
+
+print(f"\nИтоговое количество стран: {len(countries)}")
+print("Итоговый список стран:", countries)
+
+# Практическая ячейка 3. Словарь и работа с ключами
+# Данные из датасета: информация о стране
+
+country_info = {
+    "name": "Россия",
+    "continent": "Европа",
+    "population": 146000000,
+    "birth_rate": 10.5,
+    "death_rate": 14.5,
+    "gdp": 32000,
+    "capital": "Москва"
 }
 
-print("\nДанные по годам:")
-print("-" * 50)
-
-for year in years:
-    if year in data_by_year:
-        data = data_by_year[year]
-        natural = data["birth"] - data["death"]
-        status = "прирост" if natural > 0 else "убыль"
-        print(f"Год {year}: рождаемость {data['birth']}‰, смертность {data['death']}‰, "
-              f"естественный {status}: {abs(natural):.1f}‰, население {data['pop']:,} чел.")
-    else:
-        print(f"Год {year}: данные отсутствуют")
-
-print("\n" + "=" * 50)
-print(f"Всего обработано лет: {len(years)}")
+print("=" * 50)
+print("СЛОВАРЬ СТРАНЫ")
 print("=" * 50)
 
+print("\nСловарь country_info:", country_info)
+print("Название страны:", country_info["name"])
+print("Континент:", country_info["continent"])
+print("Население:", country_info["population"])
+print("Рождаемость:", country_info["birth_rate"])
+print("Смертность:", country_info["death_rate"])
+print("Столица:", country_info["capital"])
 
-# Практическая ячейка 2. Цикл по списку значений
-# Расширенный анализ стран с демографическими показателями
+# Получаем список ключей и значений
+print("\nКлючи словаря:", list(country_info.keys()))
+print("Значения словаря:", list(country_info.values()))
 
-print("=" * 60)
-print("ДЕМОГРАФИЧЕСКИЙ АНАЛИЗ СТРАН МИРА")
-print("=" * 60)
+# Добавляем новый ключ
+country_info["currency"] = "Рубль"
+print("\nПосле добавления валюты:", country_info)
 
-# Расширенный список стран с данными (население, рождаемость, смертность, ВВП)
+# Изменяем значение
+country_info["population"] = 146500000
+print("После изменения населения:", country_info)
+
+# Проверка наличия ключа
+if "gdp" in country_info:
+    print(f"ВВП страны: {country_info['gdp']} USD")
+else:
+    print("Ключ 'gdp' отсутствует")
+
+# Получение значения с дефолтным (если ключа нет)
+unemployment = country_info.get("unemployment", "Нет данных")
+print(f"Безработица: {unemployment}")
+
+
+# Практическая ячейка 4. Список словарей как мини-таблица
+# Данные из датасета: список стран с показателями
+
 countries_data = [
-    {"name": "Россия", "continent": "Европа", "pop": 146000000, "birth": 10.5, "death": 14.5, "gdp": 32000},
-    {"name": "Китай", "continent": "Азия", "pop": 1411000000, "birth": 8.5, "death": 5.8, "gdp": 18000},
-    {"name": "США", "continent": "Америка", "pop": 331000000, "birth": 11.5, "death": 9.8, "gdp": 65000},
-    {"name": "Индия", "continent": "Азия", "pop": 1380000000, "birth": 18.5, "death": 7.2, "gdp": 7000},
-    {"name": "Бразилия", "continent": "Америка", "pop": 212000000, "birth": 14.5, "death": 5.5, "gdp": 15000},
-    {"name": "Германия", "continent": "Европа", "pop": 83200000, "birth": 7.8, "death": 11.8, "gdp": 52000},
-    {"name": "Япония", "continent": "Азия", "pop": 126500000, "birth": 7.2, "death": 10.5, "gdp": 48000},
-    {"name": "Нигерия", "continent": "Африка", "pop": 206000000, "birth": 34.5, "death": 12.8, "gdp": 5000},
-    {"name": "Египет", "continent": "Африка", "pop": 100000000, "birth": 16.8, "death": 5.0, "gdp": 12000},
-    {"name": "Мексика", "continent": "Америка", "pop": 128000000, "birth": 15.5, "death": 4.8, "gdp": 19000}
+    {"name": "Россия", "continent": "Европа", "pop": 146000000, "birth": 10.5, "death": 14.5},
+    {"name": "Китай", "continent": "Азия", "pop": 1411000000, "birth": 8.5, "death": 5.8},
+    {"name": "США", "continent": "Америка", "pop": 331000000, "birth": 11.5, "death": 9.8},
+    {"name": "Индия", "continent": "Азия", "pop": 1380000000, "birth": 18.5, "death": 7.2},
+    {"name": "Бразилия", "continent": "Америка", "pop": 212000000, "birth": 14.5, "death": 5.5},
 ]
 
-# Расчет и вывод информации по каждой стране
-print("\n{:<15} {:<10} {:<15} {:<10} {:<10} {:<10} {:<10}".format(
-    "Страна", "Континент", "Население", "Рождаемость", "Смертность", "Прирост", "ВВП"
-))
-print("-" * 80)
+print("=" * 50)
+print("ТАБЛИЦА СТРАН (СПИСОК СЛОВАРЕЙ)")
+print("=" * 50)
 
-for country in countries_data:
-    natural = country["birth"] - country["death"]
-    status = "+" if natural > 0 else ""
-    print("{:<15} {:<10} {:<15,} {:<10.1f} {:<10.1f} {:<+10.1f} {:<10,}".format(
-        country["name"],
-        country["continent"],
-        country["pop"],
-        country["birth"],
-        country["death"],
-        natural,
-        country["gdp"]
+print("\n{:<15} {:<12} {:<15} {:<12} {:<12}".format(
+    "Страна", "Континент", "Население", "Рождаемость", "Смертность"
+))
+print("-" * 65)
+
+for row in countries_data:
+    natural = row["birth"] - row["death"]
+    print("{:<15} {:<12} {:<15,} {:<12.1f} {:<12.1f}".format(
+        row["name"],
+        row["continent"],
+        row["pop"],
+        row["birth"],
+        row["death"]
     ))
 
-print("-" * 80)
-print(f"Всего проанализировано стран: {len(countries_data)}")
+print("\n" + "=" * 50)
+print("ДОПОЛНИТЕЛЬНЫЙ АНАЛИЗ")
+print("=" * 50)
 
-# Практическая ячейка 3. Накопление суммы
-# Расширенный расчет статистических показателей
-
-print("=" * 60)
-print("СТАТИСТИКА НАСЕЛЕНИЯ СТРАН")
-print("=" * 60)
-
-# Данные из датасета (население стран)
-population = [146000000, 1411000000, 331000000, 1380000000, 212000000, 83200000, 126500000, 206000000, 100000000, 128000000]
-countries = ["Россия", "Китай", "США", "Индия", "Бразилия", "Германия", "Япония", "Нигерия", "Египет", "Мексика"]
-
-# Инициализация накопителей
-total_population = 0
-max_population = 0
-min_population = float('inf')
-max_country = ""
-min_country = ""
-sum_squared = 0  # для расчета дисперсии
-
-print("\nПошаговое накопление суммы:")
-print("-" * 40)
-
-for i, pop in enumerate(population):
-    total_population += pop
-    sum_squared += pop ** 2
-    print(f"Шаг {i+1}: {countries[i]} + {pop:,} = {total_population:,}")
-
-    # Поиск максимума и минимума
-    if pop > max_population:
-        max_population = pop
-        max_country = countries[i]
-    if pop < min_population:
-        min_population = pop
-        min_country = countries[i]
-
-# Расчет среднего
-average_population = total_population / len(population)
-
-# Расчет дисперсии и стандартного отклонения
-mean = average_population
-variance = (sum_squared / len(population)) - (mean ** 2)
-std_dev = variance ** 0.5
-
-print("\n" + "=" * 60)
-print("РЕЗУЛЬТАТЫ РАСЧЕТОВ:")
-print("=" * 60)
-print(f"Общая численность населения: {total_population:,} чел.")
-print(f"Количество стран: {len(population)}")
-print(f"Среднее население: {average_population:,.2f} чел.")
-print(f"Максимальное население: {max_population:,} чел. ({max_country})")
-print(f"Минимальное население: {min_population:,} чел. ({min_country})")
-print(f"Дисперсия: {variance:,.2f}")
-print(f"Стандартное отклонение: {std_dev:,.2f}")
-print(f"Размах: {max_population - min_population:,} чел.")
-
-
-# Практическая ячейка 4. Подсчет количества элементов по условию
-# Расширенный анализ с категориями стран
-
-print("=" * 60)
-print("КЛАССИФИКАЦИЯ СТРАН ПО РОЖДАЕМОСТИ И СМЕРТНОСТИ")
-print("=" * 60)
-
-countries_data = [
-    {"name": "Россия", "birth": 10.5, "death": 14.5, "pop": 146000000},
-    {"name": "Китай", "birth": 8.5, "death": 5.8, "pop": 1411000000},
-    {"name": "США", "birth": 11.5, "death": 9.8, "pop": 331000000},
-    {"name": "Индия", "birth": 18.5, "death": 7.2, "pop": 1380000000},
-    {"name": "Бразилия", "birth": 14.5, "death": 5.5, "pop": 212000000},
-    {"name": "Германия", "birth": 7.8, "death": 11.8, "pop": 83200000},
-    {"name": "Япония", "birth": 7.2, "death": 10.5, "pop": 126500000},
-    {"name": "Нигерия", "birth": 34.5, "death": 12.8, "pop": 206000000},
-    {"name": "Египет", "birth": 16.8, "death": 5.0, "pop": 100000000},
-    {"name": "Мексика", "birth": 15.5, "death": 4.8, "pop": 128000000}
-]
-
-# Пороги для классификации
-birth_threshold_high = 15.0
-birth_threshold_low = 10.0
-death_threshold_high = 10.0
-
-# Инициализация счетчиков
-high_birth = []
-medium_birth = []
-low_birth = []
-high_death = []
-natural_growth = []
-natural_decline = []
-
-for country in countries_data:
-    # Классификация по рождаемости
-    if country["birth"] > birth_threshold_high:
-        high_birth.append(country["name"])
-    elif country["birth"] > birth_threshold_low:
-        medium_birth.append(country["name"])
-    else:
-        low_birth.append(country["name"])
-
-    # Классификация по смертности
-    if country["death"] > death_threshold_high:
-        high_death.append(country["name"])
-
-    # Естественный прирост/убыль
-    if country["birth"] > country["death"]:
-        natural_growth.append(country["name"])
-    else:
-        natural_decline.append(country["name"])
-
-print("\nКЛАССИФИКАЦИЯ ПО РОЖДАЕМОСТИ:")
-print("-" * 40)
-print(f"Высокая (> {birth_threshold_high}‰): {len(high_birth)} стран - {', '.join(high_birth)}")
-print(f"Средняя ({birth_threshold_low}-{birth_threshold_high}‰): {len(medium_birth)} стран - {', '.join(medium_birth)}")
-print(f"Низкая (< {birth_threshold_low}‰): {len(low_birth)} стран - {', '.join(low_birth)}")
-
-print("\nКЛАССИФИКАЦИЯ ПО СМЕРТНОСТИ:")
-print("-" * 40)
-print(f"Высокая (> {death_threshold_high}‰): {len(high_death)} стран - {', '.join(high_death)}")
-
-print("\nЕСТЕСТВЕННЫЙ ПРИРОСТ:")
-print("-" * 40)
-print(f"Положительный: {len(natural_growth)} стран - {', '.join(natural_growth)}")
-print(f"Отрицательный (убыль): {len(natural_decline)} стран - {', '.join(natural_decline)}")
-
-
-
-# Практическая ячейка 5. Мини-задача: анализ списка стран с расширенной статистикой
-# Полный демографический анализ
-
-print("=" * 70)
-print("КОМПЛЕКСНЫЙ ДЕМОГРАФИЧЕСКИЙ АНАЛИЗ СТРАН")
-print("=" * 70)
-
-countries_data = [
-    {"name": "Россия", "continent": "Европа", "pop": 146000000, "birth": 10.5, "death": 14.5, "gdp": 32000},
-    {"name": "Китай", "continent": "Азия", "pop": 1411000000, "birth": 8.5, "death": 5.8, "gdp": 18000},
-    {"name": "США", "continent": "Америка", "pop": 331000000, "birth": 11.5, "death": 9.8, "gdp": 65000},
-    {"name": "Индия", "continent": "Азия", "pop": 1380000000, "birth": 18.5, "death": 7.2, "gdp": 7000},
-    {"name": "Бразилия", "continent": "Америка", "pop": 212000000, "birth": 14.5, "death": 5.5, "gdp": 15000},
-    {"name": "Германия", "continent": "Европа", "pop": 83200000, "birth": 7.8, "death": 11.8, "gdp": 52000},
-    {"name": "Япония", "continent": "Азия", "pop": 126500000, "birth": 7.2, "death": 10.5, "gdp": 48000},
-    {"name": "Нигерия", "continent": "Африка", "pop": 206000000, "birth": 34.5, "death": 12.8, "gdp": 5000},
-    {"name": "Египет", "continent": "Африка", "pop": 100000000, "birth": 16.8, "death": 5.0, "gdp": 12000},
-    {"name": "Мексика", "continent": "Америка", "pop": 128000000, "birth": 15.5, "death": 4.8, "gdp": 19000}
-]
-
-# Инициализация накопителей
 total_pop = 0
 total_birth = 0
 total_death = 0
-total_gdp = 0
+count = 0
+
+for row in countries_data:
+    total_pop += row["pop"]
+    total_birth += row["birth"]
+    total_death += row["death"]
+    count += 1
+
+print(f"Всего стран: {count}")
+print(f"Общее население: {total_pop:,} чел.")
+print(f"Средняя рождаемость: {total_birth/count:.2f}‰")
+print(f"Средняя смертность: {total_death/count:.2f}‰")
+
+
+# Практическая ячейка 5. Мини-задача: анализ стран
+# Данные из датасета: список стран с показателями
+
+countries_data = [
+    {"name": "Россия", "continent": "Европа", "pop": 146000000, "birth": 10.5, "death": 14.5},
+    {"name": "Китай", "continent": "Азия", "pop": 1411000000, "birth": 8.5, "death": 5.8},
+    {"name": "США", "continent": "Америка", "pop": 331000000, "birth": 11.5, "death": 9.8},
+    {"name": "Индия", "continent": "Азия", "pop": 1380000000, "birth": 18.5, "death": 7.2},
+    {"name": "Бразилия", "continent": "Америка", "pop": 212000000, "birth": 14.5, "death": 5.5},
+    {"name": "Германия", "continent": "Европа", "pop": 83200000, "birth": 7.8, "death": 11.8},
+    {"name": "Япония", "continent": "Азия", "pop": 126500000, "birth": 7.2, "death": 10.5},
+    {"name": "Нигерия", "continent": "Африка", "pop": 206000000, "birth": 34.5, "death": 12.8},
+]
+
+print("=" * 60)
+print("ДЕМОГРАФИЧЕСКИЙ АНАЛИЗ СТРАН")
+print("=" * 60)
+
+print("\n{:<15} {:<12} {:<15} {:<10} {:<10} {:<12}".format(
+    "Страна", "Континент", "Население", "Рожд.", "Смерт.", "Прирост"
+))
+print("-" * 75)
+
+total_pop = 0
+total_birth = 0
+total_death = 0
 countries_count = 0
 high_birth_count = 0
 high_death_count = 0
-growth_count = 0
-decline_count = 0
 
-# Списки для детального анализа
-high_birth_list = []
-high_death_list = []
-growth_list = []
-decline_list = []
-gdp_high_list = []
-gdp_low_list = []
+for row in countries_data:
+    natural = row["birth"] - row["death"]
+    status = "📈" if natural > 0 else "📉"
 
-# Пороги
-birth_threshold = 15.0
-death_threshold = 10.0
-gdp_threshold = 20000
-
-print("\nОБРАБОТКА ДАННЫХ ПО СТРАНАМ:")
-print("-" * 70)
-
-for country in countries_data:
-    # Накопление сумм
-    total_pop += country["pop"]
-    total_birth += country["birth"]
-    total_death += country["death"]
-    total_gdp += country["gdp"]
+    total_pop += row["pop"]
+    total_birth += row["birth"]
+    total_death += row["death"]
     countries_count += 1
 
-    # Естественный прирост
-    natural = country["birth"] - country["death"]
-
-    # Проверка условий
-    if country["birth"] > birth_threshold:
+    if row["birth"] > 15.0:
         high_birth_count += 1
-        high_birth_list.append(country["name"])
-    if country["death"] > death_threshold:
+    if row["death"] > 10.0:
         high_death_count += 1
-        high_death_list.append(country["name"])
-    if natural > 0:
-        growth_count += 1
-        growth_list.append(country["name"])
-    else:
-        decline_count += 1
-        decline_list.append(country["name"])
-    if country["gdp"] > gdp_threshold:
-        gdp_high_list.append(country["name"])
-    else:
-        gdp_low_list.append(country["name"])
 
-    # Вывод текущей обработки (каждый 2-й)
-    if countries_count % 2 == 0:
-        print(f"Обработано {countries_count} стран...")
+    print("{:<15} {:<12} {:<15,} {:<10.1f} {:<10.1f} {:<12.1f} {}".format(
+        row["name"],
+        row["continent"],
+        row["pop"],
+        row["birth"],
+        row["death"],
+        natural,
+        status
+    ))
 
-# Расчет средних значений
+print("-" * 75)
+
 avg_pop = total_pop / countries_count
 avg_birth = total_birth / countries_count
 avg_death = total_death / countries_count
-avg_gdp = total_gdp / countries_count
 
-print("\n" + "=" * 70)
-print("ИТОГОВАЯ СТАТИСТИКА:")
-print("=" * 70)
+print("\n" + "=" * 60)
+print("ИТОГОВАЯ СТАТИСТИКА")
+print("=" * 60)
 
-print(f"\n1. ОБЩИЕ ПОКАЗАТЕЛИ:")
-print(f"   Всего стран: {countries_count}")
-print(f"   Общее население: {total_pop:,} чел.")
-print(f"   Среднее население: {avg_pop:,.2f} чел.")
-print(f"   Средняя рождаемость: {avg_birth:.2f}‰")
-print(f"   Средняя смертность: {avg_death:.2f}‰")
-print(f"   Средний ВВП: ${avg_gdp:,.2f}")
-
-print(f"\n2. АНАЛИЗ ПО УСЛОВИЯМ:")
-print(f"   Стран с рождаемостью > {birth_threshold}‰: {high_birth_count} ({', '.join(high_birth_list)})")
-print(f"   Стран со смертностью > {death_threshold}‰: {high_death_count} ({', '.join(high_death_list)})")
-print(f"   Стран с естественным приростом: {growth_count} ({', '.join(growth_list)})")
-print(f"   Стран с естественной убылью: {decline_count} ({', '.join(decline_list)})")
-print(f"   Стран с высоким ВВП (> ${gdp_threshold}): {len(gdp_high_list)} ({', '.join(gdp_high_list)})")
-print(f"   Стран с низким ВВП (< ${gdp_threshold}): {len(gdp_low_list)} ({', '.join(gdp_low_list)})")
-
-print(f"\n3. ВЫВОДЫ:")
-if growth_count > decline_count:
-    print(f"   ✅ В большинстве стран ({growth_count}) наблюдается естественный прирост.")
-else:
-    print(f"   ⚠️ В большинстве стран ({decline_count}) наблюдается естественная убыль.")
-if high_birth_count > high_death_count:
-    print(f"   📈 Высокая рождаемость ({high_birth_count} стран) преобладает над высокой смертностью ({high_death_count} стран).")
-else:
-    print(f"   📉 Высокая смертность ({high_death_count} стран) преобладает над высокой рождаемостью ({high_birth_count} стран).")
-if len(gdp_high_list) > len(gdp_low_list):
-    print(f"   💰 Большинство стран ({len(gdp_high_list)}) имеют высокий ВВП.")
-else:
-    print(f"   💰 Большинство стран ({len(gdp_low_list)}) имеют низкий ВВП.")
-
-print("\n" + "=" * 70)
-
-
+print(f"Количество стран: {countries_count}")
+print(f"Общее население: {total_pop:,} чел.")
+print(f"Среднее население: {avg_pop:,.2f} чел.")
+print(f"Средняя рождаемость: {avg_birth:.2f}‰")
+print(f"Средняя смертность: {avg_death:.2f}‰")
+print(f"Стран с высокой рождаемостью (>15‰): {high_birth_count}")
+print(f"Стран с высокой смертностью (>10‰): {high_death_count}")
 
 
 # Практическая ячейка 6. Тест и самопроверка
+# Данные из датасета
 
-print("=" * 60)
-print("ЗАПУСК ТЕСТОВ ПО УРОКУ 4")
-print("=" * 60)
+print("=" * 50)
+print("ЗАПУСК ТЕСТОВ")
+print("=" * 50)
 
-# 1. range() с шагом
-years = []
-for y in range(2000, 2021, 5):
-    years.append(y)
-assert years == [2000, 2005, 2010, 2015, 2020]
-print("✅ Тест 1 пройден: range() работает корректно")
+# 1. Список и индексы
+countries = ["Россия", "Китай", "США", "Индия", "Бразилия"]
+assert countries[0] == "Россия"
+assert countries[-1] == "Бразилия"
+assert len(countries) == 5
+print("✅ Тест 1 пройден: список и индексы")
 
-# 2. Перебор списка и сумма (ВСЕ 10 СТРАН ИЗ ВАШЕГО ДАТАСЕТА)
-population = [146000000, 1411000000, 331000000, 1380000000, 212000000, 206000000, 83200000, 126500000, 128000000, 100000000]
-total = 0
-for pop in population:
-    total += pop
-# Сумма всех 10 стран: 146000000 + 1411000000 + 331000000 + 1380000000 + 212000000 + 206000000 + 83200000 + 126500000 + 128000000 + 100000000 = 4123700000
-assert total == 4123700000
-print("✅ Тест 2 пройден: сумма населения рассчитана верно")
+# 2. Изменение списка
+countries[1] = "Китай (КНР)"
+countries.append("Германия")
+assert countries == ["Россия", "Китай (КНР)", "США", "Индия", "Бразилия", "Германия"]
+print("✅ Тест 2 пройден: изменение списка")
 
-# 3. Подсчёт элементов по условию (рождаемость)
-birth_rates = [10.5, 8.5, 11.5, 18.5, 14.5, 34.5, 7.8, 7.2, 15.5, 16.8]
-count_high = 0
-for rate in birth_rates:
-    if rate > 12.0:
-        count_high += 1
-assert count_high == 5
-print("✅ Тест 3 пройден: подсчет по условию работает")
+# 3. Словарь
+country_info = {"name": "Россия", "continent": "Европа", "population": 146000000}
+assert country_info["name"] == "Россия"
+assert country_info["continent"] == "Европа"
+assert country_info["population"] == 146000000
+print("✅ Тест 3 пройден: словарь")
 
-# 4. Подсчёт элементов по условию (смертность)
-death_rates = [14.5, 5.8, 9.8, 7.2, 5.5, 12.8, 11.8, 10.5, 4.8, 5.0]
-count_high_death = 0
-for rate in death_rates:
-    if rate > 10.0:
-        count_high_death += 1
-assert count_high_death == 4
-print("✅ Тест 4 пройден: подсчет смертности работает")
-
-# 5. Мини-проверка среднего
-population_avg = [146000000, 1411000000, 331000000, 1380000000, 212000000]
-total_population_avg = 0
-countries_count_avg = 0
-for pop in population_avg:
-    total_population_avg += pop
-    countries_count_avg += 1
-average_population = total_population_avg / countries_count_avg
-assert average_population == 696000000.0
-print("✅ Тест 5 пройден: среднее рассчитано верно")
-
-print("\n" + "=" * 60)
-print("✅ ТЕСТ ПРОЙДЕН УСПЕШНО! Все проверки выполнены.")
-print("=" * 60)
-
-
-
-# Практическая ячейка 7. Итоговый отчет по уроку 4
-# Полный демографический анализ с визуализацией данных
-
-print("=" * 80)
-print(" " * 25 + "ИТОГОВЫЙ ОТЧЕТ")
-print(" " * 20 + "ПО УРОКУ 4: ЦИКЛЫ И ПОВТОРЯЮЩИЕСЯ РАСЧЕТЫ")
-print("=" * 80)
-
-# Данные (10 стран)
+# 4. Список словарей
 countries_data = [
-    {"name": "Россия", "continent": "Европа", "pop": 146000000, "birth": 10.5, "death": 14.5, "gdp": 32000},
-    {"name": "Китай", "continent": "Азия", "pop": 1411000000, "birth": 8.5, "death": 5.8, "gdp": 18000},
-    {"name": "США", "continent": "Америка", "pop": 331000000, "birth": 11.5, "death": 9.8, "gdp": 65000},
-    {"name": "Индия", "continent": "Азия", "pop": 1380000000, "birth": 18.5, "death": 7.2, "gdp": 7000},
-    {"name": "Бразилия", "continent": "Америка", "pop": 212000000, "birth": 14.5, "death": 5.5, "gdp": 15000},
-    {"name": "Нигерия", "continent": "Африка", "pop": 206000000, "birth": 34.5, "death": 12.8, "gdp": 5000},
-    {"name": "Германия", "continent": "Европа", "pop": 83200000, "birth": 7.8, "death": 11.8, "gdp": 52000},
-    {"name": "Япония", "continent": "Азия", "pop": 126500000, "birth": 7.2, "death": 10.5, "gdp": 48000},
-    {"name": "Мексика", "continent": "Америка", "pop": 128000000, "birth": 15.5, "death": 4.8, "gdp": 19000},
-    {"name": "Египет", "continent": "Африка", "pop": 100000000, "birth": 16.8, "death": 5.0, "gdp": 12000}
+    {"pop": 146000000, "birth": 10.5},
+    {"pop": 1411000000, "birth": 8.5},
+    {"pop": 331000000, "birth": 11.5},
 ]
 
-# ============================================
-# 1. РАСЧЕТ СТАТИСТИК
-# ============================================
+total_pop = 0
+total_birth = 0
+for row in countries_data:
+    total_pop += row["pop"]
+    total_birth += row["birth"]
 
-print("\n" + "█" * 80)
-print(" 1. СТАТИСТИЧЕСКИЙ АНАЛИЗ")
-print("█" * 80)
+assert total_pop == 1888000000
+assert total_birth == 30.5
+print("✅ Тест 4 пройден: список словарей")
+
+# 5. Расчёт суммы
+countries_data = [
+    {"pop": 146000000, "birth": 10.5},
+    {"pop": 1411000000, "birth": 8.5},
+]
+
+total_pop = 0
+for row in countries_data:
+    total_pop += row["pop"]
+
+assert total_pop == 1557000000
+print("✅ Тест 5 пройден: расчёт суммы")
+
+print("\n" + "=" * 50)
+print("✅ ТЕСТ ПРОЙДЕН УСПЕШНО! Все проверки выполнены.")
+print("=" * 50)
+
+
+# Практическая ячейка 7. Итоговый отчет по уроку 5 (исправленный)
+
+countries_data = [
+    {"name": "Россия", "continent": "Европа", "pop": 146000000, "birth": 10.5, "death": 14.5, "gdp": 32000, "area": 17125191, "density": 8.5},
+    {"name": "Китай", "continent": "Азия", "pop": 1411000000, "birth": 8.5, "death": 5.8, "gdp": 18000, "area": 9596961, "density": 147.0},
+    {"name": "США", "continent": "Америка", "pop": 331000000, "birth": 11.5, "death": 9.8, "gdp": 65000, "area": 9833517, "density": 33.7},
+    {"name": "Индия", "continent": "Азия", "pop": 1380000000, "birth": 18.5, "death": 7.2, "gdp": 7000, "area": 3287263, "density": 419.8},
+    {"name": "Бразилия", "continent": "Америка", "pop": 212000000, "birth": 14.5, "death": 5.5, "gdp": 15000, "area": 8515767, "density": 24.9},
+    {"name": "Германия", "continent": "Европа", "pop": 83200000, "birth": 7.8, "death": 11.8, "gdp": 52000, "area": 357022, "density": 233.0},
+    {"name": "Япония", "continent": "Азия", "pop": 126500000, "birth": 7.2, "death": 10.5, "gdp": 48000, "area": 377975, "density": 334.7},
+    {"name": "Нигерия", "continent": "Африка", "pop": 206000000, "birth": 34.5, "death": 12.8, "gdp": 5000, "area": 923768, "density": 223.0},
+    {"name": "Мексика", "continent": "Америка", "pop": 128000000, "birth": 15.5, "death": 4.8, "gdp": 19000, "area": 1964375, "density": 65.2},
+    {"name": "Египет", "continent": "Африка", "pop": 100000000, "birth": 16.8, "death": 5.0, "gdp": 12000, "area": 1002450, "density": 99.8},
+]
+
+print("=" * 85)
+print(" " * 25 + "ИТОГОВЫЙ ОТЧЕТ ПО УРОКУ 5")
+print(" " * 18 + "СПИСКИ, СЛОВАРИ И ТАБЛИЧНОЕ МЫШЛЕНИЕ")
+print("=" * 85)
+
+print("\n" + "█" * 85)
+print(" 1. ОБЩАЯ ИНФОРМАЦИЯ О ДАННЫХ")
+print("█" * 85)
+
+print(f"\n📊 В таблице представлены данные по {len(countries_data)} странам мира.")
+print("📋 Колонки данных:")
+print("   - name: название страны")
+print("   - continent: континент")
+print("   - pop: численность населения (человек)")
+print("   - birth: рождаемость (на 1000 человек)")
+print("   - death: смертность (на 1000 человек)")
+print("   - gdp: ВВП на душу населения (USD)")
+print("   - area: площадь территории (кв.км)")
+print("   - density: плотность населения (чел/кв.км)")
+
+print("\n" + "█" * 85)
+print(" 2. ДЕТАЛЬНАЯ ТАБЛИЦА ПО СТРАНАМ")
+print("█" * 85)
+
+print("\n{:<15} {:<12} {:<15} {:<10} {:<10} {:<12} {:<8} {:<12}".format(
+    "Страна", "Континент", "Население", "Рожд.", "Смерт.", "Прирост", "ВВП", "Плотность"
+))
+print("-" * 100)
 
 total_pop = 0
 total_birth = 0
 total_death = 0
 total_gdp = 0
+total_area = 0
+total_density = 0
 country_count = 0
+growth_count = 0
+decline_count = 0
+gdp_high = 0
+gdp_low = 0
+asia_count = 0
+europe_count = 0
+america_count = 0
+africa_count = 0
 
-max_pop = 0
-min_pop = float('inf')
-max_pop_country = ""
-min_pop_country = ""
+birth_rates = []
+death_rates = []
+gdp_rates = []
+density_rates = []
 
-max_birth = 0
-min_birth = float('inf')
-max_birth_country = ""
-min_birth_country = ""
+growth_list = []
+decline_list = []
+high_birth = []
+low_birth = []
+high_death = []
+low_death = []
+high_gdp = []
+low_gdp = []
+dense_countries = []
+sparse_countries = []
 
-max_death = 0
-min_death = float('inf')
-max_death_country = ""
-min_death_country = ""
+for row in countries_data:
+    natural = row["birth"] - row["death"]
+    status = "📈" if natural > 0 else "📉"
 
-for country in countries_data:
-    total_pop += country["pop"]
-    total_birth += country["birth"]
-    total_death += country["death"]
-    total_gdp += country["gdp"]
+    total_pop += row["pop"]
+    total_birth += row["birth"]
+    total_death += row["death"]
+    total_gdp += row["gdp"]
+    total_area += row["area"]
+    total_density += row["density"]
     country_count += 1
 
-    if country["pop"] > max_pop:
-        max_pop = country["pop"]
-        max_pop_country = country["name"]
-    if country["pop"] < min_pop:
-        min_pop = country["pop"]
-        min_pop_country = country["name"]
+    birth_rates.append(row["birth"])
+    death_rates.append(row["death"])
+    gdp_rates.append(row["gdp"])
+    density_rates.append(row["density"])
 
-    if country["birth"] > max_birth:
-        max_birth = country["birth"]
-        max_birth_country = country["name"]
-    if country["birth"] < min_birth:
-        min_birth = country["birth"]
-        min_birth_country = country["name"]
+    if natural > 0:
+        growth_count += 1
+        growth_list.append((row["name"], natural))
+    else:
+        decline_count += 1
+        decline_list.append((row["name"], abs(natural)))
 
-    if country["death"] > max_death:
-        max_death = country["death"]
-        max_death_country = country["name"]
-    if country["death"] < min_death:
-        min_death = country["death"]
-        min_death_country = country["name"]
+    if row["gdp"] > 30000:
+        gdp_high += 1
+        high_gdp.append(row["name"])
+    else:
+        gdp_low += 1
+        low_gdp.append(row["name"])
+
+    if row["continent"] == "Азия":
+        asia_count += 1
+    elif row["continent"] == "Европа":
+        europe_count += 1
+    elif row["continent"] == "Америка":
+        america_count += 1
+    elif row["continent"] == "Африка":
+        africa_count += 1
+
+    if row["birth"] > 15.0:
+        high_birth.append(row["name"])
+    elif row["birth"] < 10.0:
+        low_birth.append(row["name"])
+
+    if row["death"] > 10.0:
+        high_death.append(row["name"])
+    elif row["death"] < 7.0:
+        low_death.append(row["name"])
+
+    if row["density"] > 100:
+        dense_countries.append((row["name"], row["density"]))
+    else:
+        sparse_countries.append((row["name"], row["density"]))
+
+    print("{:<15} {:<12} {:<15,} {:<10.1f} {:<10.1f} {:<12.1f} {:<8,} {:<12.1f} {}".format(
+        row["name"],
+        row["continent"],
+        row["pop"],
+        row["birth"],
+        row["death"],
+        natural,
+        row["gdp"],
+        row["density"],
+        status
+    ))
+
+print("-" * 100)
 
 avg_pop = total_pop / country_count
 avg_birth = total_birth / country_count
 avg_death = total_death / country_count
 avg_gdp = total_gdp / country_count
+avg_area = total_area / country_count
+avg_density = total_density / country_count
 
-print(f"\n📊 ОБЩИЕ ПОКАЗАТЕЛИ:")
+# Сортировка по населению
+sorted_by_pop = sorted(countries_data, key=lambda x: x["pop"], reverse=True)
+max_pop_country = sorted_by_pop[0]
+min_pop_country = sorted_by_pop[-1]
+
+# Сортировка по рождаемости
+sorted_by_birth = sorted(countries_data, key=lambda x: x["birth"], reverse=True)
+max_birth_country = sorted_by_birth[0]
+min_birth_country = sorted_by_birth[-1]
+
+# Сортировка по смертности
+sorted_by_death = sorted(countries_data, key=lambda x: x["death"], reverse=True)
+max_death_country = sorted_by_death[0]
+min_death_country = sorted_by_death[-1]
+
+# Сортировка по ВВП
+sorted_by_gdp = sorted(countries_data, key=lambda x: x["gdp"], reverse=True)
+max_gdp_country = sorted_by_gdp[0]
+min_gdp_country = sorted_by_gdp[-1]
+
+print("\n" + "█" * 85)
+print(" 3. СТАТИСТИЧЕСКИЕ ПОКАЗАТЕЛИ")
+print("█" * 85)
+
+print(f"\n📊 ОБЩАЯ СТАТИСТИКА:")
 print(f"   Всего стран: {country_count}")
-print(f"   Общее население: {total_pop:>15,} чел.")
-print(f"   Среднее население: {avg_pop:>15,.2f} чел.")
-print(f"   Максимальное население: {max_pop:>15,} чел. ({max_pop_country})")
-print(f"   Минимальное население: {min_pop:>15,} чел. ({min_pop_country})")
+print(f"   Общее население: {total_pop:,} чел.")
+print(f"   Среднее население: {avg_pop:,.2f} чел.")
+print(f"   Средняя рождаемость: {avg_birth:.2f}‰")
+print(f"   Средняя смертность: {avg_death:.2f}‰")
+print(f"   Средний ВВП: ${avg_gdp:,.2f}")
+print(f"   Средняя плотность населения: {avg_density:.1f} чел/кв.км")
 
-print(f"\n📈 РОЖДАЕМОСТЬ:")
-print(f"   Средняя рождаемость: {avg_birth:>15.2f}‰")
-print(f"   Максимальная рождаемость: {max_birth:>15.1f}‰ ({max_birth_country})")
-print(f"   Минимальная рождаемость: {min_birth:>15.1f}‰ ({min_birth_country})")
+print(f"\n📈 МАКСИМАЛЬНЫЕ ПОКАЗАТЕЛИ:")
+print(f"   Максимальное население: {max_pop_country['name']} ({max_pop_country['pop']:,} чел.)")
+print(f"   Максимальная рождаемость: {max_birth_country['name']} ({max_birth_country['birth']:.1f}‰)")
+print(f"   Максимальная смертность: {max_death_country['name']} ({max_death_country['death']:.1f}‰)")
+print(f"   Максимальный ВВП: {max_gdp_country['name']} (${max_gdp_country['gdp']:,})")
 
-print(f"\n📉 СМЕРТНОСТЬ:")
-print(f"   Средняя смертность: {avg_death:>15.2f}‰")
-print(f"   Максимальная смертность: {max_death:>15.1f}‰ ({max_death_country})")
-print(f"   Минимальная смертность: {min_death:>15.1f}‰ ({min_death_country})")
+print(f"\n📉 МИНИМАЛЬНЫЕ ПОКАЗАТЕЛИ:")
+print(f"   Минимальное население: {min_pop_country['name']} ({min_pop_country['pop']:,} чел.)")
+print(f"   Минимальная рождаемость: {min_birth_country['name']} ({min_birth_country['birth']:.1f}‰)")
+print(f"   Минимальная смертность: {min_death_country['name']} ({min_death_country['death']:.1f}‰)")
+print(f"   Минимальный ВВП: {min_gdp_country['name']} (${min_gdp_country['gdp']:,})")
 
-print(f"\n💰 ЭКОНОМИКА:")
-print(f"   Средний ВВП: ${avg_gdp:>14,.2f}")
+print("\n" + "█" * 85)
+print(" 4. РАСПРЕДЕЛЕНИЕ ПО КОНТИНЕНТАМ")
+print("█" * 85)
 
-# ============================================
-# 2. ДЕТАЛЬНЫЙ АНАЛИЗ ПО СТРАНАМ
-# ============================================
+print(f"\n🌍 КОНТИНЕНТЫ:")
+print(f"   Азия: {asia_count} стран")
+print(f"   Европа: {europe_count} стран")
+print(f"   Америка: {america_count} стран")
+print(f"   Африка: {africa_count} стран")
 
-print("\n" + "█" * 80)
-print(" 2. ДЕТАЛЬНЫЙ АНАЛИЗ ПО СТРАНАМ")
-print("█" * 80)
+# Группировка по континентам
+continents_data = {}
+for row in countries_data:
+    continent = row["continent"]
+    if continent not in continents_data:
+        continents_data[continent] = []
+    continents_data[continent].append(row)
 
-print("\n{:<15} {:<12} {:<15} {:<10} {:<10} {:<12} {:<12}".format(
-    "Страна", "Континент", "Население", "Рожд.", "Смерт.", "Прирост", "ВВП"
+print(f"\n📊 СВОДКА ПО КОНТИНЕНТАМ:")
+print("\n{:<12} {:<8} {:<15} {:<12} {:<12} {:<10}".format(
+    "Континент", "Стран", "Население", "Рождаемость", "Смертность", "ВВП"
 ))
-print("-" * 85)
+print("-" * 75)
 
-for country in countries_data:
-    natural = country["birth"] - country["death"]
-    status = "📈" if natural > 0 else "📉"
-    print("{:<15} {:<12} {:<15,} {:<10.1f} {:<10.1f} {:<12.1f} {:<12,}".format(
-        country["name"],
-        country["continent"],
-        country["pop"],
-        country["birth"],
-        country["death"],
-        natural,
-        country["gdp"]
+for continent, rows in continents_data.items():
+    cont_pop = sum([r["pop"] for r in rows])
+    cont_birth = sum([r["birth"] for r in rows]) / len(rows)
+    cont_death = sum([r["death"] for r in rows]) / len(rows)
+    cont_gdp = sum([r["gdp"] for r in rows]) / len(rows)
+    print("{:<12} {:<8} {:<15,} {:<12.2f} {:<12.2f} {:<10,.0f}".format(
+        continent,
+        len(rows),
+        cont_pop,
+        cont_birth,
+        cont_death,
+        cont_gdp
     ))
 
-# ============================================
-# 3. КЛАССИФИКАЦИЯ СТРАН
-# ============================================
+print("\n" + "█" * 85)
+print(" 5. КЛАССИФИКАЦИЯ СТРАН ПО ПОКАЗАТЕЛЯМ")
+print("█" * 85)
 
-print("\n" + "█" * 80)
-print(" 3. КЛАССИФИКАЦИЯ СТРАН")
-print("█" * 80)
+print(f"\n👶 КЛАССИФИКАЦИЯ ПО РОЖДАЕМОСТИ:")
+print(f"   Высокая (>15‰): {len(high_birth)} стран → {', '.join(high_birth) if high_birth else 'нет'}")
+print(f"   Низкая (<10‰): {len(low_birth)} стран → {', '.join(low_birth) if low_birth else 'нет'}")
 
-# По рождаемости
-high_birth = []
-medium_birth = []
-low_birth = []
-for country in countries_data:
-    if country["birth"] > 15.0:
-        high_birth.append(country["name"])
-    elif country["birth"] > 10.0:
-        medium_birth.append(country["name"])
-    else:
-        low_birth.append(country["name"])
+print(f"\n💀 КЛАССИФИКАЦИЯ ПО СМЕРТНОСТИ:")
+print(f"   Высокая (>10‰): {len(high_death)} стран → {', '.join(high_death) if high_death else 'нет'}")
+print(f"   Низкая (<7‰): {len(low_death)} стран → {', '.join(low_death) if low_death else 'нет'}")
 
-print(f"\n👶 РОЖДАЕМОСТЬ:")
-print(f"   Высокая (>15‰): {len(high_birth)} стран → {', '.join(high_birth)}")
-print(f"   Средняя (10-15‰): {len(medium_birth)} стран → {', '.join(medium_birth)}")
-print(f"   Низкая (<10‰): {len(low_birth)} стран → {', '.join(low_birth)}")
+print(f"\n💰 КЛАССИФИКАЦИЯ ПО ВВП:")
+print(f"   Высокий (>$30000): {len(high_gdp)} стран → {', '.join(high_gdp) if high_gdp else 'нет'}")
+print(f"   Низкий (<$30000): {len(low_gdp)} стран → {', '.join(low_gdp) if low_gdp else 'нет'}")
 
-# По смертности
-high_death = []
-medium_death = []
-low_death = []
-for country in countries_data:
-    if country["death"] > 10.0:
-        high_death.append(country["name"])
-    elif country["death"] > 7.0:
-        medium_death.append(country["name"])
-    else:
-        low_death.append(country["name"])
+print(f"\n🏙️ КЛАССИФИКАЦИЯ ПО ПЛОТНОСТИ НАСЕЛЕНИЯ:")
+print(f"   Высокая (>100 чел/кв.км): {len(dense_countries)} стран → {', '.join([c[0] for c in dense_countries]) if dense_countries else 'нет'}")
+print(f"   Низкая (<100 чел/кв.км): {len(sparse_countries)} стран → {', '.join([c[0] for c in sparse_countries]) if sparse_countries else 'нет'}")
 
-print(f"\n💀 СМЕРТНОСТЬ:")
-print(f"   Высокая (>10‰): {len(high_death)} стран → {', '.join(high_death)}")
-print(f"   Средняя (7-10‰): {len(medium_death)} стран → {', '.join(medium_death)}")
-print(f"   Низкая (<7‰): {len(low_death)} стран → {', '.join(low_death)}")
+print("\n" + "█" * 85)
+print(" 6. ЕСТЕСТВЕННЫЙ ПРИРОСТ НАСЕЛЕНИЯ")
+print("█" * 85)
 
-# По ВВП
-high_gdp = []
-medium_gdp = []
-low_gdp = []
-for country in countries_data:
-    if country["gdp"] > 30000:
-        high_gdp.append(country["name"])
-    elif country["gdp"] > 15000:
-        medium_gdp.append(country["name"])
-    else:
-        low_gdp.append(country["name"])
-
-print(f"\n💵 ВВП:")
-print(f"   Высокий (>$30000): {len(high_gdp)} стран → {', '.join(high_gdp)}")
-print(f"   Средний ($15000-$30000): {len(medium_gdp)} стран → {', '.join(medium_gdp)}")
-print(f"   Низкий (<$15000): {len(low_gdp)} стран → {', '.join(low_gdp)}")
-
-# ============================================
-# 4. ЕСТЕСТВЕННЫЙ ПРИРОСТ
-# ============================================
-
-print("\n" + "█" * 80)
-print(" 4. ЕСТЕСТВЕННЫЙ ПРИРОСТ НАСЕЛЕНИЯ")
-print("█" * 80)
-
-growth = []
-decline = []
-for country in countries_data:
-    natural = country["birth"] - country["death"]
-    if natural > 0:
-        growth.append((country["name"], natural))
-    else:
-        decline.append((country["name"], abs(natural)))
-
-print(f"\n✅ Страны с естественным приростом ({len(growth)}):")
-if growth:
-    for name, val in growth:
+print(f"\n✅ СТРАНЫ С ЕСТЕСТВЕННЫМ ПРИРОСТОМ ({len(growth_list)}):")
+if growth_list:
+    for name, val in growth_list:
         print(f"   {name}: +{val:.1f}‰")
 else:
     print("   Нет стран с естественным приростом")
 
-print(f"\n❌ Страны с естественной убылью ({len(decline)}):")
-if decline:
-    for name, val in decline:
+print(f"\n❌ СТРАНЫ С ЕСТЕСТВЕННОЙ УБЫЛЬЮ ({len(decline_list)}):")
+if decline_list:
+    for name, val in decline_list:
         print(f"   {name}: -{val:.1f}‰")
 else:
     print("   Нет стран с естественной убылью")
 
-# ============================================
-# 5. ДЕМОГРАФИЧЕСКИЙ РИСК
-# ============================================
-
-print("\n" + "█" * 80)
-print(" 5. АНАЛИЗ ДЕМОГРАФИЧЕСКОГО РИСКА")
-print("█" * 80)
-
-risk_countries = []
-stable_countries = []
-for country in countries_data:
-    natural = country["birth"] - country["death"]
-    if natural < 0:
-        risk_countries.append(country["name"])
-    elif country["birth"] > 25.0 and country["death"] > 10.0:
-        risk_countries.append(country["name"])
-    else:
-        stable_countries.append(country["name"])
-
-print(f"\n⚠️ Страны с демографическим риском ({len(risk_countries)}):")
-if risk_countries:
-    for name in risk_countries:
-        print(f"   {name}")
-else:
-    print("   Нет")
-
-print(f"\n✅ Стабильные страны ({len(stable_countries)}):")
-if stable_countries:
-    for name in stable_countries:
-        print(f"   {name}")
-else:
-    print("   Нет")
-
-# ============================================
-# 6. ВЫВОДЫ И РЕКОМЕНДАЦИИ
-# ============================================
-
-print("\n" + "█" * 80)
-print(" 6. ВЫВОДЫ И РЕКОМЕНДАЦИИ")
-print("█" * 80)
+print("\n" + "█" * 85)
+print(" 7. ВЫВОДЫ И РЕКОМЕНДАЦИИ")
+print("█" * 85)
 
 print("\n📌 ОСНОВНЫЕ ВЫВОДЫ:")
 
-if len(growth) > len(decline):
-    print(f"   ✅ В {len(growth)} странах наблюдается естественный прирост населения.")
-    print(f"      Демографическая ситуация в целом благоприятная.")
+# Вывод по приросту
+if growth_count > decline_count:
+    print(f"   ✅ В {growth_count} странах ({growth_count/country_count*100:.0f}%) наблюдается естественный прирост населения.")
+    print(f"      Страны с приростом: {', '.join([c[0] for c in growth_list])}")
+    print(f"      Страны с убылью: {', '.join([c[0] for c in decline_list])}")
 else:
-    print(f"   ⚠️ В {len(decline)} странах наблюдается естественная убыль населения.")
-    print(f"      Требуется проведение демографической политики.")
+    print(f"   ⚠️ В {decline_count} странах ({decline_count/country_count*100:.0f}%) наблюдается естественная убыль населения.")
+    print(f"      Страны с убылью: {', '.join([c[0] for c in decline_list])}")
+    print(f"      Страны с приростом: {', '.join([c[0] for c in growth_list])}")
 
-if len(high_birth) > len(low_birth):
-    print(f"   📈 Высокая рождаемость ({len(high_birth)} стран) преобладает над низкой ({len(low_birth)}).")
-else:
-    print(f"   📉 Низкая рождаемость ({len(low_birth)} стран) преобладает над высокой ({len(high_birth)}).")
+# Вывод по рождаемости
+print(f"\n   👶 По рождаемости:")
+print(f"      Высокая рождаемость (>15‰) в {len(high_birth)} странах: {', '.join(high_birth) if high_birth else 'нет'}")
+print(f"      Низкая рождаемость (<10‰) в {len(low_birth)} странах: {', '.join(low_birth) if low_birth else 'нет'}")
 
-if len(high_gdp) > len(low_gdp):
-    print(f"   💰 В {len(high_gdp)} странах высокий уровень ВВП.")
-else:
-    print(f"   💰 В {len(low_gdp)} странах низкий уровень ВВП.")
+# Вывод по смертности
+print(f"\n   💀 По смертности:")
+print(f"      Высокая смертность (>10‰) в {len(high_death)} странах: {', '.join(high_death) if high_death else 'нет'}")
+print(f"      Низкая смертность (<7‰) в {len(low_death)} странах: {', '.join(low_death) if low_death else 'нет'}")
+
+# Вывод по ВВП
+print(f"\n   💰 По ВВП:")
+print(f"      Высокий ВВП (>$30000) в {len(high_gdp)} странах: {', '.join(high_gdp) if high_gdp else 'нет'}")
+print(f"      Низкий ВВП (<$30000) в {len(low_gdp)} странах: {', '.join(low_gdp) if low_gdp else 'нет'}")
+
+# Вывод по плотности
+print(f"\n   🏙️ По плотности населения:")
+print(f"      Высокая плотность (>100 чел/кв.км) в {len(dense_countries)} странах: {', '.join([c[0] for c in dense_countries]) if dense_countries else 'нет'}")
+print(f"      Низкая плотность (<100 чел/кв.км) в {len(sparse_countries)} странах: {', '.join([c[0] for c in sparse_countries]) if sparse_countries else 'нет'}")
 
 print("\n📌 РЕКОМЕНДАЦИИ:")
 
-if len(risk_countries) > 0:
-    print(f"   - Обратить внимание на страны с демографическим риском:")
-    for name in risk_countries:
-        print(f"     * {name}")
-
-if len(decline) > 0:
-    print(f"   - Разработать меры поддержки рождаемости в странах с убылью:")
-    for name, val in decline:
+if decline_list:
+    print("   - Разработать меры поддержки рождаемости в странах с убылью:")
+    for name, val in decline_list:
         print(f"     * {name} (убыль {val:.1f}‰)")
 
-if len(low_gdp) > 0:
-    print(f"   - Стимулировать экономический рост в странах с низким ВВП:")
+if low_gdp:
+    print("   - Стимулировать экономический рост в странах с низким ВВП:")
     for name in low_gdp:
         print(f"     * {name}")
 
-# ============================================
-# 7. ИТОГОВАЯ СТАТИСТИКА
-# ============================================
+if dense_countries:
+    print("   - Учитывать высокую плотность населения при планировании инфраструктуры:")
+    for name, val in dense_countries:
+        print(f"     * {name} ({val:.1f} чел/кв.км)")
 
-print("\n" + "█" * 80)
-print(" 7. ИТОГОВАЯ СТАТИСТИКА")
-print("█" * 80)
+print("\n" + "█" * 85)
+print(" 8. ИТОГОВАЯ СВОДНАЯ СТАТИСТИКА")
+print("█" * 85)
 
 print(f"""
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                        СВОДНАЯ СТАТИСТИКА                                  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  Всего стран                     {country_count:>10}                                    │
-│  Общее население                 {total_pop:>15,} чел.                     │
-│  Среднее население               {avg_pop:>15,.2f} чел.                   │
-│  Средняя рождаемость             {avg_birth:>15.2f}‰                      │
-│  Средняя смертность              {avg_death:>15.2f}‰                      │
-│  Средний ВВП                     ${avg_gdp:>14,.2f}                       │
-│  Стран с приростом               {len(growth):>10}                                   │
-│  Стран с убылью                  {len(decline):>10}                                   │
-│  Стран с демографическим риском  {len(risk_countries):>10}                           │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                              СВОДНАЯ СТАТИСТИКА                                    │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│  Всего стран                     {country_count:>10}                                        │
+│  Общее население                 {total_pop:>15,} чел.                              │
+│  Среднее население               {avg_pop:>15,.2f} чел.                            │
+│  Средняя рождаемость             {avg_birth:>15.2f}‰                               │
+│  Средняя смертность              {avg_death:>15.2f}‰                               │
+│  Средний ВВП                     ${avg_gdp:>14,.2f}                                │
+│  Средняя плотность               {avg_density:>15.1f} чел/кв.км                   │
+│  Стран с приростом               {growth_count:>10}                                        │
+│  Стран с убылью                  {decline_count:>10}                                        │
+│  Стран с высоким ВВП             {gdp_high:>10}                                          │
+│  Стран с низким ВВП              {gdp_low:>10}                                           │
+│  Стран с высокой плотностью      {len(dense_countries):>10}                                  │
+│  Стран с низкой плотностью       {len(sparse_countries):>10}                                 │
+└─────────────────────────────────────────────────────────────────────────────────────┘
 """)
 
-print("=" * 80)
+print("\n" + "█" * 85)
+print(" 9. ИТОГОВОЕ ЗАКЛЮЧЕНИЕ")
+print("█" * 85)
+
+print(f"""
+В ходе выполнения урока 5 были изучены и отработаны следующие темы:
+1. Создание списков и доступ к элементам по индексу
+2. Изменение списков и добавление элементов
+3. Создание словарей и работа с ключами
+4. Список словарей как мини-таблица
+5. Анализ данных на основе списка словарей
+
+На основе данных по {country_count} странам мира получены следующие результаты:
+- Общее население: {total_pop:,} человек
+- Средняя рождаемость: {avg_birth:.2f}‰
+- Средняя смертность: {avg_death:.2f}‰
+- В {growth_count} странах наблюдается естественный прирост населения
+- В {decline_count} странах наблюдается естественная убыль населения
+- Максимальное население: {max_pop_country['name']} ({max_pop_country['pop']:,} чел.)
+- Минимальное население: {min_pop_country['name']} ({min_pop_country['pop']:,} чел.)
+- Максимальный ВВП: {max_gdp_country['name']} (${max_gdp_country['gdp']:,})
+- Минимальный ВВП: {min_gdp_country['name']} (${min_gdp_country['gdp']:,})
+
+Полученные навыки являются основой для работы с табличными данными и
+подготовкой к изучению библиотеки pandas.
+""")
+
+print("=" * 85)
 print(" " * 30 + "✅ ОТЧЕТ СФОРМИРОВАН")
-print(" " * 25 + "ДАННЫЕ ГОТОВЫ К АНАЛИЗУ")
-print("=" * 80)
+print(" " * 28 + "ДАННЫЕ ГОТОВЫ К АНАЛИЗУ")
+print("=" * 85)
