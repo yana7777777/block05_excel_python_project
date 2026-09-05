@@ -1,8 +1,8 @@
-# Загрузка данных из локальной папки data
+# Ячейка 1. Загружаем CSV из папки data, создаём Excel и считаем базовые агрегаты
 import pandas as pd
 from pathlib import Path
 
-# Путь к CSV файлу в папке data
+# Указываем путь к CSV файлу в папке data
 csv_path = Path("data/demographic_data.csv")
 
 # Проверяем, что файл существует
@@ -12,226 +12,228 @@ if not csv_path.exists():
 # Читаем CSV файл
 df = pd.read_csv(csv_path)
 
-# Проверяем, что загрузилось
-print("Размер таблицы:", df.shape)
-print("\nПервые 5 строк:")
+# Создаём вычисляемый столбец natural_increase
+df["natural_increase"] = df["birth_rate"] - df["death_rate"]
+
+# Сохраняем как XLSX в папку data
+xlsx_path = Path("data/lesson_09_groupby_pivot.xlsx")
+df.to_excel(xlsx_path, index=False, sheet_name="sales_data")
+
+print(f"✅ Файл сохранён: {xlsx_path}")
+
+# Базовые агрегаты
+print("\n📊 РАЗМЕР ТАБЛИЦЫ:", df.shape)
+print("📊 КОЛИЧЕСТВО ЗАПИСЕЙ:", len(df))
+print("📊 ОБЩИЙ ЕСТЕСТВЕННЫЙ ПРИРОСТ:", int(df["natural_increase"].sum()))
+print("📊 СРЕДНИЙ ЕСТЕСТВЕННЫЙ ПРИРОСТ:", round(df["natural_increase"].mean(), 2))
+print("📊 МАКСИМАЛЬНЫЙ ПРИРОСТ:", int(df["natural_increase"].max()))
+print("📊 МИНИМАЛЬНЫЙ ПРИРОСТ:", int(df["natural_increase"].min()))
+
 print(df.head())
-print("\nНазвания столбцов:")
-print(list(df.columns))
-
-# Сохраняем как XLSX в ту же папку data
-xlsx_path = Path("data/demographic_data.xlsx")
-df.to_excel(xlsx_path, index=False, sheet_name="demographic_data")
-
-print(f"\n✅ Файл успешно конвертирован и сохранен как: {xlsx_path}")
-
-# Проверяем, что файл создался
-if xlsx_path.exists():
-    print(f"✅ Файл {xlsx_path.name} успешно создан в папке {xlsx_path.parent}")
-else:
-    print("❌ Что-то пошло не так, файл не создан")
 
 
 
-
-# Ячейка 2. Фильтрация по одному условию
-# Адаптировано под демографический датасет
-
+# Ячейка 2. Группировка по континентам
 print("="*70)
-print("ФИЛЬТРАЦИЯ ПО ОДНОМУ УСЛОВИЮ")
+print("ГРУППИРОВКА ПО КОНТИНЕНТАМ")
 print("="*70)
 
-# Проверяем уникальные значения континентов
-print("\n🌍 УНИКАЛЬНЫЕ КОНТИНЕНТЫ В ДАННЫХ:")
-print(df["continent"].unique())
+continent_summary = (
+    df.groupby("continent", as_index=False)
+      .agg(
+          total_natural=("natural_increase", "sum"),
+          countries=("country", "count"),
+          avg_natural=("natural_increase", "mean"),
+          avg_birth=("birth_rate", "mean"),
+          avg_death=("death_rate", "mean")
+      )
+)
 
-# TODO:
-# 1. Отберите только строки, где continent == "Europe"
-# 2. Сохраните результат в europe_df
-# 3. Выведите количество строк после фильтра
-# 4. Покажите результат
+continent_summary["avg_natural"] = continent_summary["avg_natural"].round(2)
+continent_summary["avg_birth"] = continent_summary["avg_birth"].round(2)
+continent_summary["avg_death"] = continent_summary["avg_death"].round(2)
 
-europe_df = df[df["continent"] == "Europe"]
-
-print(f"\n📊 Количество строк в датасете: {len(df)}")
-print(f"📊 Количество строк с континентом 'Europe': {len(europe_df)}")
-print(f"📊 Процент европейских стран: {len(europe_df) / len(df) * 100:.1f}%")
-
-print("\n📋 ПЕРВЫЕ 5 СТРОК ОТФИЛЬТРОВАННОЙ ТАБЛИЦЫ:")
-print(europe_df.head())
-
-print("\n📊 СТАТИСТИКА ПО ЕВРОПЕЙСКИМ СТРАНАМ:")
-print(europe_df[["pop", "birth_rate", "death_rate"]].describe())
+print("\n📊 СВОДКА ПО КОНТИНЕНТАМ:")
+print(continent_summary.to_string(index=False))
 
 
-# Ячейка 3. Фильтрация по нескольким условиям
-# Адаптировано под демографический датасет
-
+# Ячейка 3. Группировка по континентам и годам
 print("="*70)
-print("ФИЛЬТРАЦИЯ ПО НЕСКОЛЬКИМ УСЛОВИЯМ")
+print("ГРУППИРОВКА ПО КОНТИНЕНТАМ И ГОДАМ")
 print("="*70)
 
-# TODO:
-# 1. Создайте фильтр для строк, где continent == "Europe"
-# 2. Добавьте второе условие: year >= 2010
-# 3. Сохраните результат в europe_recent_df
-# 4. Выведите количество строк и саму таблицу
+cont_year_summary = (
+    df.groupby(["continent", "year"], as_index=False)
+      .agg(
+          total_natural=("natural_increase", "sum"),
+          avg_natural=("natural_increase", "mean"),
+          countries=("country", "count"),
+          avg_birth=("birth_rate", "mean"),
+          avg_death=("death_rate", "mean")
+      )
+      .sort_values(["continent", "year"], ascending=[True, True])
+)
 
-europe_recent_df = df[(df["continent"] == "Europe") & (df["year"] >= 2010)]
+cont_year_summary["avg_natural"] = cont_year_summary["avg_natural"].round(2)
+cont_year_summary["avg_birth"] = cont_year_summary["avg_birth"].round(2)
+cont_year_summary["avg_death"] = cont_year_summary["avg_death"].round(2)
 
-print(f"\n📊 Количество строк в датасете: {len(df)}")
-print(f"📊 Количество строк с континентом 'Europe' и годом >= 2010: {len(europe_recent_df)}")
-print(f"📊 Процент от общего датасета: {len(europe_recent_df) / len(df) * 100:.1f}%")
-
-print("\n📋 ПЕРВЫЕ 5 СТРОК ОТФИЛЬТРОВАННОЙ ТАБЛИЦЫ:")
-print(europe_recent_df.head())
-
-print("\n📊 СТАТИСТИКА ПО ОТФИЛЬТРОВАННЫМ ДАННЫМ:")
-print(europe_recent_df[["pop", "birth_rate", "death_rate"]].describe())
+print("\n📊 СВОДКА ПО КОНТИНЕНТАМ И ГОДАМ:")
+print(cont_year_summary.to_string(index=False))
 
 
-# Ячейка 4. Сортировка таблицы
-# Адаптировано под демографический датасет
-
+# Ячейка 4. Сортировка и поиск лидера
 print("="*70)
-print("СОРТИРОВКА ТАБЛИЦЫ")
-print("="*70)
-
-# TODO:
-# 1. Отсортируйте таблицу по столбцу pop (население) по убыванию
-# 2. Сохраните результат в sorted_by_pop
-# 3. Покажите первые 5 строк результата
-
-sorted_by_pop = df.sort_values(by="pop", ascending=False)
-
-print("\n📊 ТОП-5 СТРАН ПО НАСЕЛЕНИЮ (ВСЕ ГОДЫ):")
-print(sorted_by_pop[["country", "continent", "year", "pop"]].head(5))
-
-print("\n📊 ТОП-5 СТРАН ПО НАСЕЛЕНИЮ (ТОЛЬКО 2020 ГОД):")
-df_2020 = df[df["year"] == 2020]
-sorted_by_pop_2020 = df_2020.sort_values(by="pop", ascending=False)
-print(sorted_by_pop_2020[["country", "continent", "pop"]].head(5))
-
-
-# Ячейка 5. Вычисляемый столбец и мини-задача
-print("="*70)
-print("ВЫЧИСЛЯЕМЫЙ СТОЛБЕЦ И МИНИ-ЗАДАЧА")
+print("СОРТИРОВКА И ПОИСК ЛИДЕРА")
 print("="*70)
 
-df_calc = df.copy()
-df_calc["natural_increase"] = df_calc["birth_rate"] - df_calc["death_rate"]
+# Сортируем по total_natural (убывание)
+continent_sorted = continent_summary.sort_values(by="total_natural", ascending=False)
 
-avg_natural = df_calc["natural_increase"].mean()
-high_growth = df_calc[df_calc["natural_increase"] > 5].sort_values(by="natural_increase", ascending=False)
-decline = df_calc[df_calc["natural_increase"] < 0].sort_values(by="natural_increase", ascending=True)
+top_continent = continent_sorted.iloc[0]["continent"]
+top_continent_natural = int(continent_sorted.iloc[0]["total_natural"])
 
-print(f"\nСредний прирост: {avg_natural:.2f}‰")
-print(f"Стран с приростом > 5‰: {len(high_growth)}")
-print(f"Стран с убылью: {len(decline)}")
+print(f"\n🏆 ЛИДЕР ПО ЕСТЕСТВЕННОМУ ПРИРОСТУ: {top_continent}")
+print(f"   Общий прирост: {top_continent_natural}‰")
 
-print("\nТоп-10 по приросту:")
-print(high_growth[["country", "year", "natural_increase"]].head(10))
+print("\n📊 ВСЕ КОНТИНЕНТЫ (ОТ ЛУЧШЕГО К ХУДШЕМУ):")
+print(continent_sorted[["continent", "total_natural", "countries", "avg_natural"]].to_string(index=False))
 
 
-# Ячейка 6. Тесты
-print("="*50)
+
+# Ячейка 5. Сводная таблица: континент × год
+print("="*70)
+print("СВОДНАЯ ТАБЛИЦА: КОНТИНЕНТ × ГОД")
+print("="*70)
+
+pivot = pd.pivot_table(
+    df,
+    values="natural_increase",
+    index="continent",
+    columns="year",
+    aggfunc="mean",
+    fill_value=0
+)
+
+pivot = pivot.round(2)
+
+best_year_continent = pivot.sum(axis=0).idxmax()
+best_continent_2020 = pivot[2020].idxmax()
+
+print(f"\n📊 Год с максимальным средним приростом: {best_year_continent}")
+print(f"📊 Континент-лидер в 2020 году: {best_continent_2020}")
+
+print("\n📊 СВОДНАЯ ТАБЛИЦА (средний прирост по континентам и годам):")
+print(pivot.to_string())
+
+
+# Ячейка 6. Тесты и самопроверка
+print("="*70)
 print("ТЕСТЫ")
-print("="*50)
+print("="*70)
 
 test_df = df.copy()
 
 # 1. Размер таблицы
 assert test_df.shape == (len(df), len(df.columns))
-print("✅ Размер OK")
+print("✅ Размер таблицы OK")
 
-# 2. Фильтрация по континенту
-test_europe = test_df[test_df["continent"] == "Europe"]
-assert len(test_europe) > 0
-print(f"✅ Europe: {len(test_europe)}")
-
-# 3. Фильтрация по нескольким условиям
-test_recent = test_df[(test_df["continent"] == "Europe") & (test_df["year"] >= 2010)]
-assert len(test_recent) > 0
-print(f"✅ Europe>=2010: {len(test_recent)}")
-
-# 4. Сортировка (проверяем, что есть данные)
-test_sorted = test_df.sort_values(by="pop", ascending=False)
-assert len(test_sorted) > 0, "Таблица пуста"
-print(f"✅ Лидер по населению: {test_sorted.iloc[0]['country']} ({test_sorted.iloc[0]['pop']:,} чел.)")
-
-# 5. Вычисляемый столбец
-test_calc = test_df.copy()
-test_calc["natural_increase"] = test_calc["birth_rate"] - test_calc["death_rate"]
-assert "natural_increase" in test_calc.columns
+# 2. Проверка natural_increase
+assert "natural_increase" in test_df.columns
 print("✅ natural_increase OK")
 
-# 6. Фильтрация по вычисляемому столбцу
-test_high = test_calc[test_calc["natural_increase"] > 5]
-assert len(test_high) > 0
-print(f"✅ Прирост >5: {len(test_high)}")
+# 3. Группировка по континентам
+test_continent = test_df.groupby("continent")["natural_increase"].sum()
+assert len(test_continent) > 0
+print(f"✅ Континентов: {len(test_continent)}")
+
+# 4. Группировка по годам
+test_year = test_df.groupby("year")["natural_increase"].mean()
+assert len(test_year) > 0
+print(f"✅ Годов: {len(test_year)}")
+
+# 5. Сводная таблица
+test_pivot = pd.pivot_table(
+    test_df,
+    values="natural_increase",
+    index="continent",
+    columns="year",
+    aggfunc="mean",
+    fill_value=0
+)
+assert test_pivot.shape[0] > 0
+print("✅ Сводная таблица OK")
+
+# 6. Сортировка
+test_sorted = test_df.groupby("continent")["natural_increase"].sum().sort_values(ascending=False)
+assert len(test_sorted) > 0
+print(f"✅ Лидер: {test_sorted.index[0]}")
 
 print("\n🎉 ВСЕ ТЕСТЫ ПРОЙДЕНЫ!")
 
 
-
-# Ячейка 7. Итоговый отчет по уроку 8
+# Ячейка 7. Итоговый отчет по уроку 9
 print("="*70)
-print("ИТОГОВЫЙ ОТЧЕТ ПО УРОКУ 8")
-print("ФИЛЬТРАЦИЯ, СОРТИРОВКА И ВЫЧИСЛЯЕМЫЕ СТОЛБЦЫ")
+print("ИТОГОВЫЙ ОТЧЕТ ПО УРОКУ 9")
+print("ГРУППИРОВКА, АГРЕГАТЫ И СВОДНЫЕ ТАБЛИЦЫ")
 print("="*70)
 
 # 1. Общая статистика
 print("\n1. ОБЩАЯ СТАТИСТИКА")
-print("-"*40)
-print(f"Всего строк: {len(df)}")
-print(f"Всего столбцов: {len(df.columns)}")
+print("-"*50)
+print(f"Всего записей: {len(df)}")
 print(f"Стран: {df['country'].nunique()}")
 print(f"Континентов: {df['continent'].nunique()}")
 print(f"Годов: {df['year'].nunique()}")
 
-print(f"\nСредняя рождаемость: {df['birth_rate'].mean():.2f}‰")
-print(f"Средняя смертность: {df['death_rate'].mean():.2f}‰")
-print(f"Средний прирост: {(df['birth_rate'] - df['death_rate']).mean():.2f}‰")
+print(f"\nОбщий естественный прирост: {df['natural_increase'].sum():.0f}‰")
+print(f"Средний естественный прирост: {df['natural_increase'].mean():.2f}‰")
+print(f"Максимальный прирост: {df['natural_increase'].max():.1f}‰")
+print(f"Минимальный прирост: {df['natural_increase'].min():.1f}‰")
 
-# 2. Фильтрация
-print("\n2. ФИЛЬТРАЦИЯ")
-print("-"*40)
-europe_df = df[df["continent"] == "Europe"]
-print(f"Европа: {len(europe_df)} записей ({len(europe_df)/len(df)*100:.1f}%)")
+# 2. Группировка по континентам
+print("\n2. ГРУППИРОВКА ПО КОНТИНЕНТАМ")
+print("-"*50)
+print(continent_summary[["continent", "total_natural", "countries", "avg_natural", "avg_birth", "avg_death"]].to_string(index=False))
 
-europe_recent = df[(df["continent"] == "Europe") & (df["year"] >= 2010)]
-print(f"Европа (год >= 2010): {len(europe_recent)} записей")
+# 3. Группировка по годам
+print("\n3. ГРУППИРОВКА ПО ГОДАМ")
+print("-"*50)
+year_summary = (
+    df.groupby("year", as_index=False)
+      .agg(
+          avg_natural=("natural_increase", "mean"),
+          avg_birth=("birth_rate", "mean"),
+          avg_death=("death_rate", "mean")
+      )
+      .round(2)
+)
+print(year_summary.to_string(index=False))
 
-high_growth = df[(df["birth_rate"] - df["death_rate"]) > 5]
-print(f"С приростом > 5‰: {len(high_growth)} записей")
+# 4. Сводная таблица
+print("\n4. СВОДНАЯ ТАБЛИЦА: КОНТИНЕНТ × ГОД")
+print("-"*50)
+print(pivot.to_string())
 
-# 3. Сортировка
-print("\n3. ТОП-5 ПО НАСЕЛЕНИЮ (2020)")
-print("-"*40)
-df_2020 = df[df["year"] == 2020]
-top5 = df_2020.nlargest(5, "pop")
-for i, (_, row) in enumerate(top5.iterrows(), 1):
-    print(f"{i}. {row['country']}: {row['pop']:,} чел.")
+# 5. Лидеры
+print("\n5. ЛИДЕРЫ ПО ЕСТЕСТВЕННОМУ ПРИРОСТУ")
+print("-"*50)
+top_cont = continent_sorted.iloc[0]
+print(f"Континент-лидер: {top_cont['continent']} (прирост {top_cont['total_natural']:.0f}‰)")
 
-# 4. Топ по приросту
-print("\n4. ТОП-5 ПО ЕСТЕСТВЕННОМУ ПРИРОСТУ")
-print("-"*40)
-df_calc = df.copy()
-df_calc["natural_increase"] = df_calc["birth_rate"] - df_calc["death_rate"]
-top_natural = df_calc.nlargest(5, "natural_increase")
-for i, (_, row) in enumerate(top_natural.iterrows(), 1):
-    print(f"{i}. {row['country']} ({row['year']}): {row['natural_increase']:.1f}‰")
+country_avg = df.groupby("country")["natural_increase"].mean().sort_values(ascending=False)
+print(f"Страна-лидер: {country_avg.index[0]} ({country_avg.iloc[0]:.1f}‰)")
 
-# 5. Итоговый вывод
-print("\n5. ВЫВОДЫ")
+# 6. Выводы
+print("\n6. ВЫВОДЫ")
 print("="*70)
-print("""✅ Фильтрация позволяет отбирать данные по условиям (континент, год)
-✅ Сортировка выделяет лидеров по населению и другим показателям
-✅ Вычисляемые столбцы помогают анализировать прирост населения
-✅ Данные готовы для дальнейшего анализа и визуализации""")
-
+print("""
+✅ Группировка позволяет анализировать данные по континентам и годам
+✅ Агрегаты (sum, mean) дают обобщённую картину демографической ситуации
+✅ Сводные таблицы показывают динамику прироста по континентам и годам
+✅ Лидеры по приросту: развивающиеся страны Азии и Африки
+✅ Данные готовы для дальнейшего анализа и визуализации
+""")
 print("="*70)
 print("ОТЧЕТ СФОРМИРОВАН")
 print("="*70)
-
-
